@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "15672:15672"  # Interfaz de gestión
+      - "5672:5672"    # Puerto de RabbitMQ
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  flask_app:
+    build: ./app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - rabbitmq
+
+volumes:
+  rabbitmq_data:
